@@ -24,6 +24,8 @@ from opencensus.stats import view as view_module
 from opencensus.stats import stats as stats_module
 from opencensus.tags import tag_map as tag_map_module
 
+app = Flask(__name__)
+
 # Logging
 logger = logging.getLogger(__name__)
 logger.addHandler(AzureLogHandler(connection_string ='InstrumentationKey=beb79916-4ef1-4f84-aa45-bba754c0d881'))
@@ -41,8 +43,6 @@ tracer = Tracer(
         sampler = ProbabilitySampler(1.0)
     )
 )
-
-app = Flask(__name__)
 
 # Requests
 middleware = FlaskMiddleware(
@@ -148,6 +148,6 @@ def index():
 
 if __name__ == "__main__":
     # TODO: Use the statement below when running locally
-    # app.run() 
+    #  app.run() 
     # TODO: Use the statement below before deployment to VMSS
     app.run(host='0.0.0.0', threaded=True, debug=True) # remote
