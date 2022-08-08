@@ -8,8 +8,6 @@ import sys
 import logging
 from datetime import datetime
 
-appInsightKey = "InstrumentationKey=beb79916-4ef1-4f84-aa45-bba754c0d881"
-
 # App Insights
 # TODO: Import required libraries for App Insights
 from opencensus.ext.azure.log_exporter import AzureLogHandler
@@ -32,13 +30,13 @@ logger = logging.getLogger(__name__)
 # Metrics
 exporter = metrics_exporter.new_metrics_exporter(
     enable_standard_metrics = True,
-    connection_string = appInsightKey
+    connection_string = 'InstrumentationKey=beb79916-4ef1-4f84-aa45-bba754c0d881'
 )
 
 # Tracing
 tracer = Tracer(
     exporter = AzureExporter(
-        connection_string = appInsightKey,
+        connection_string = 'InstrumentationKey=beb79916-4ef1-4f84-aa45-bba754c0d881',
         sampler = ProbabilitySampler(1.0)
     )
 )
@@ -49,7 +47,7 @@ app = Flask(__name__)
 middleware = FlaskMiddleware(
     app,
     exporter = AzureExporter(
-        connection_string = appInsightKey
+        connection_string = 'InstrumentationKey=beb79916-4ef1-4f84-aa45-bba754c0d881'
     ),  
     sampler = ProbabilitySampler(rate = 1.0)
 
@@ -124,11 +122,13 @@ def index():
             properties = {'custom_dimensions': {'Cats Vote': vote1}}
             # TODO: use logger object to log cat vote
             logger.info('Cats Vote', extra =properties)
+            logger.warning('Cats Vote',extra=properties)
 
             vote2 = r.get(button2).decode('utf-8')
             properties = {'custom_dimensions': {'Dogs Vote': vote2}}
             # TODO: use logger object to log dog vote
-            logger.info('Cats Vote')
+            logger.info('Dogs Vote' ,extra =properties)
+            logger.warning('Dogs Vote' ,extra =properties)
 
             return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
 
