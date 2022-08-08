@@ -26,7 +26,8 @@ from opencensus.tags import tag_map as tag_map_module
 
 # Logging
 logger = logging.getLogger(__name__)
-
+logger.addHandler(AzureLogHandler(connection_string ='InstrumentationKey=beb79916-4ef1-4f84-aa45-bba754c0d881'))
+logger.addHandler(AzureEventHandler(connection_string ='InstrumentationKey=beb79916-4ef1-4f84-aa45-bba754c0d881'))
 # Metrics
 exporter = metrics_exporter.new_metrics_exporter(
     enable_standard_metrics = True,
